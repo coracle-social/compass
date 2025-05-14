@@ -18,11 +18,13 @@ strfry_contact: ""
 strfry_icon: ""
 
 # System settings
-strfry_create_user: true
 strfry_system_dependencies:
   - git
-  - build-essential
-  - cmake
-  - pkg-config
-  - librocksdb-dev
+  - g++
+  - make
+  - libssl-dev
+  - zlib1g-dev
+  - liblmdb-dev
+  - libflatbuffers-dev
   - libsecp256k1-dev
+  - libzstd-dev

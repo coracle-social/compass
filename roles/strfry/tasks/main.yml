@@ -5,6 +5,12 @@
     state: present
     update_cache: yes
 
+- name: Create strfry group
+  group:
+    name: "{{ strfry_group }}"
+    system: yes
+    state: present
+
 - name: Create strfry user
   user:
     name: "{{ strfry_user }}"
@@ -12,7 +18,6 @@
     system: yes
     create_home: no
     shell: /sbin/nologin
-  when: strfry_create_user
 
 - name: Create strfry directories
   file:
@@ -30,16 +35,19 @@
     repo: "{{ strfry_repo }}"
     dest: "{{ strfry_install_dir }}"
     version: "{{ strfry_version }}"
+    recursive: yes
     force: yes
+  become_user: "{{ strfry_user }}"
 
 - name: Build strfry
   command:
     cmd: "{{ item }}"
     chdir: "{{ strfry_install_dir }}"
   loop:
-    - cmake -B build
-    - cmake --build build -j
+    - make setup-golpe
+    - make
   changed_when: true
+  become_user: "{{ strfry_user }}"
 
 - name: Copy strfry plugin
   template:
