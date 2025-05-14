@@ -1,0 +1,16 @@
+[Unit]
+Description=Strfry Nostr Relay
+After=network.target
+
+[Service]
+Type=simple
+User={{ strfry_user }}
+Group={{ strfry_group }}
+ExecStart={{ strfry_install_dir }}/build/strfry relay --config /etc/strfry.conf
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

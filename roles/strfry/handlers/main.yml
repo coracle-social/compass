@@ -1,0 +1,6 @@
+---
+- name: restart strfry
+  systemd:
+    name: strfry
+    state: restarted
+    daemon_reload: yes

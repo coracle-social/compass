@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+const rl = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
+});
+
+rl.on('line', (line) => {
+    let req = JSON.parse(line);
+
+    if (req.type !== 'new') {
+        console.error("unexpected request type");
+        return;
+    }
+
+    let res = { id: req.event.id };
+
+    if (req.event.kind === 10002) {
+        res.action = 'accept';
+    } else {
+        res.action = 'reject';
+        res.msg = 'blocked: this relay only accepts kind 10002 events';
+    }
+
+    console.log(JSON.stringify(res));
+});

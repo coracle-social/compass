@@ -1,0 +1,6 @@
+---
+- name: Strfry Indexer Relay
+  hosts: all
+  become: true
+  roles:
+    - strfry

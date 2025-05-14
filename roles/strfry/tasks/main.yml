@@ -1,0 +1,72 @@
+---
+- name: Install system dependencies
+  apt:
+    name: "{{ strfry_system_dependencies }}"
+    state: present
+    update_cache: yes
+
+- name: Create strfry user
+  user:
+    name: "{{ strfry_user }}"
+    group: "{{ strfry_group }}"
+    system: yes
+    create_home: no
+    shell: /sbin/nologin
+  when: strfry_create_user
+
+- name: Create strfry directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ strfry_user }}"
+    group: "{{ strfry_group }}"
+    mode: '0755'
+  loop:
+    - "{{ strfry_install_dir }}"
+    - "{{ strfry_db_path }}"
+
+- name: Clone strfry repository
+  git:
+    repo: "{{ strfry_repo }}"
+    dest: "{{ strfry_install_dir }}"
+    version: "{{ strfry_version }}"
+    force: yes
+
+- name: Build strfry
+  command:
+    cmd: "{{ item }}"
+    chdir: "{{ strfry_install_dir }}"
+  loop:
+    - cmake -B build
+    - cmake --build build -j
+  changed_when: true
+
+- name: Copy strfry plugin
+  template:
+    src: strfry.plugin.j2
+    dest: /etc/strfry.plugin.js
+    owner: "{{ strfry_user }}"
+    group: "{{ strfry_group }}"
+    mode: '0644'
+
+- name: Copy strfry configuration
+  template:
+    src: strfry.conf.j2
+    dest: /etc/strfry.conf
+    owner: "{{ strfry_user }}"
+    group: "{{ strfry_group }}"
+    mode: '0644'
+
+- name: Install systemd service
+  template:
+    src: strfry.service.j2
+    dest: /etc/systemd/system/strfry.service
+    mode: '0644'
+  notify: restart strfry
+
+- name: Enable and start strfry service
+  systemd:
+    name: strfry
+    state: started
+    enabled: yes
+    daemon_reload: yes

@@ -1,0 +1,28 @@
+---
+# Strfry version and installation settings
+strfry_version: "master"
+strfry_repo: "https://github.com/hoytech/strfry.git"
+strfry_install_dir: "/opt/strfry"
+
+# Runtime configuration
+strfry_user: "strfry"
+strfry_group: "strfry"
+strfry_port: 7777
+strfry_db_path: "/var/lib/strfry"
+
+# NIP 11 metadata
+strfry_name: "NIP-65 Indexer"
+strfry_description: "A relay that only accepts kind 10002 events."
+strfry_pubkey: ""
+strfry_contact: ""
+strfry_icon: ""
+
+# System settings
+strfry_create_user: true
+strfry_system_dependencies:
+  - git
+  - build-essential
+  - cmake
+  - pkg-config
+  - librocksdb-dev
+  - libsecp256k1-dev
