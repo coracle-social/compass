@@ -35,10 +35,7 @@ cat inventory/hosts.template.yml \
   > inventory/hosts.yml
 ```
 
-2. Customize deployment settings in `roles/strfry/defaults/main.yml` (Optional):
-```yaml
-strfry_version: "1.0.4"
-```
+2. Customize deployment settings in `roles/strfry/defaults/main.yml` (Optional)
 
 ## Deploy
 
