@@ -1,0 +1,56 @@
+---
+- name: Install nginx and certbot
+  apt:
+    name:
+      - nginx
+      - certbot
+      - python3-certbot-nginx
+    state: present
+    update_cache: yes
+
+- name: Remove default nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: restart nginx
+
+- name: Create strfry nginx configuration
+  template:
+    src: strfry.conf.j2
+    dest: /etc/nginx/sites-available/strfry
+    mode: '0644'
+  notify: restart nginx
+
+- name: Enable strfry site
+  file:
+    src: /etc/nginx/sites-available/strfry
+    dest: /etc/nginx/sites-enabled/strfry
+    state: link
+  notify: restart nginx
+
+- name: Start and enable nginx
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Check if certificate already exists
+  stat:
+    path: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
+  register: cert_file
+
+- name: Obtain SSL certificate
+  command: >
+    certbot --nginx
+    -d {{ domain_name }}
+    --non-interactive
+    --agree-tos
+    -m {{ certbot_email }}
+    --redirect
+  when: not cert_file.stat.exists
+
+- name: Add certbot renewal cron job
+  cron:
+    name: "certbot renewal"
+    job: "certbot renew --quiet --no-self-upgrade"
+    special_time: daily

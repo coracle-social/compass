@@ -27,15 +27,9 @@ uv venv
 
 ## Configuration
 
-1. Update inventory with your server details in `inventory/hosts.yml`:
-```sh
-cat inventory/hosts.template.yml \
-  | sed s/HOST/YOUR_HOSTNAME_HERE/g \
-  | sed s/USER/YOUR_USERNAME_HERE/g \
-  > inventory/hosts.yml
-```
-
-2. Customize deployment settings in `roles/strfry/defaults/main.yml` (Optional)
+1. Fill in your server details in `inventory/hosts.yml`
+2. Customize strfry settings in `roles/strfry/defaults/main.yml`
+3. Set your domain name in `roles/nginx/defaults/main.yml`
 
 ## Deploy
 
