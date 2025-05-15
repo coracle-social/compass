@@ -6,9 +6,9 @@ streams {
         filter = { "kinds": [10002] }
 
         urls = [
-            "wss://purplepag.es"
-            "wss://relay.damus.io"
-            "wss://relay.nostr.band"
+            {% for url in strfry_mirror_urls %}
+            "{{ url }}"
+            {% endfor %}
         ]
     }
 }

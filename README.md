@@ -28,8 +28,8 @@ uv venv
 ## Configuration
 
 1. Fill in your server details in `inventory/hosts.yml`
-2. Customize strfry settings in `roles/strfry/defaults/main.yml`
-3. Set your domain name in `roles/nginx/defaults/main.yml`
+2. Customize the deployment in `roles/strfry/defaults/main.yml`
+3. Set your relay's domain name in `roles/nginx/defaults/main.yml`
 
 ## Deploy
 

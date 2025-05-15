@@ -17,6 +17,11 @@ strfry_pubkey: ""
 strfry_contact: ""
 strfry_icon: ""
 
+# Router configuration
+strfry_mirror_urls:
+  - "wss://purplepag.es"
+  - "wss://relay.nostr.band"
+
 # System settings
 strfry_system_dependencies:
   - git
@@ -28,3 +33,4 @@ strfry_system_dependencies:
   - libflatbuffers-dev
   - libsecp256k1-dev
   - libzstd-dev
+
