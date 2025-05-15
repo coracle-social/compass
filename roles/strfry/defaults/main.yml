@@ -18,10 +18,7 @@ strfry_contact: ""
 strfry_icon: ""
 
 # Router configuration
-strfry_mirror_urls:
-  - "wss://purplepag.es"
-  - "wss://relay.nostr.band"
-  - "wss://indexer.coracle.social"
+strfry_mirror_urls: []
 
 # System settings
 strfry_system_dependencies:
