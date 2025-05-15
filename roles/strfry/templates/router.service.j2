@@ -1,0 +1,16 @@
+[Unit]
+Description=Strfry Nostr Relay Router
+After=network.target
+
+[Service]
+Type=simple
+User={{ strfry_user }}
+Group={{ strfry_group }}
+ExecStart={{ strfry_install_dir }}/strfry router /etc/strfry.router.config
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

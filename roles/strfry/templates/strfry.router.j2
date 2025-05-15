@@ -1,0 +1,14 @@
+connectionTimeout = 20
+
+streams {
+    mirror {
+        dir = "both"
+        filter = { "kinds": [10002] }
+
+        urls = [
+            "wss://purplepag.es"
+            "wss://relay.damus.io"
+            "wss://relay.nostr.band"
+        ]
+    }
+}

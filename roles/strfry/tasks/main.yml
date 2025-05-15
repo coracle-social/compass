@@ -49,13 +49,35 @@
   changed_when: true
   become_user: "{{ strfry_user }}"
 
+- name: Install nvm
+  ansible.builtin.shell: >
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+  become_user: "{{ strfry_user }}"
+
+- name: Install Node.js and set version
+  shell: '. {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install v22.15.1'
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/versions/node/v22.15.1"
+    chdir: "{{ ansible_env.HOME }}"
+    executable: /bin/bash
+
 - name: Copy strfry plugin
   template:
     src: strfry.plugin.j2
     dest: /etc/strfry.plugin.js
     owner: "{{ strfry_user }}"
     group: "{{ strfry_group }}"
-    mode: '0644'
+    mode: '0755'
+
+- name: Copy strfry router config
+  template:
+    src: strfry.router.j2
+    dest: /etc/strfry.router.config
+    owner: "{{ strfry_user }}"
+    group: "{{ strfry_group }}"
+    mode: '0755'
 
 - name: Copy strfry configuration
   template:
@@ -65,16 +87,30 @@
     group: "{{ strfry_group }}"
     mode: '0644'
 
-- name: Install systemd service
+- name: Install relay systemd service
   template:
     src: strfry.service.j2
     dest: /etc/systemd/system/strfry.service
     mode: '0644'
   notify: restart strfry
 
+- name: Install router systemd service
+  template:
+    src: router.service.j2
+    dest: /etc/systemd/system/router.service
+    mode: '0644'
+  notify: restart strfry
+
 - name: Enable and start strfry service
   systemd:
     name: strfry
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: Enable and start router service
+  systemd:
+    name: router
     state: started
     enabled: yes
     daemon_reload: yes
