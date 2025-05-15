@@ -34,20 +34,14 @@
     state: started
     enabled: yes
 
-- name: Check if certificate already exists
-  stat:
-    path: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
-  register: cert_file
-
 - name: Obtain SSL certificate
   command: >
     certbot --nginx
     -d {{ domain_name }}
+    -m {{ certbot_email }}
     --non-interactive
     --agree-tos
-    -m {{ certbot_email }}
     --redirect
-  when: not cert_file.stat.exists
 
 - name: Add certbot renewal cron job
   cron:
