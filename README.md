@@ -1,6 +1,8 @@
 # Strfry Indexer Relay
 
-Ansible playbook to deploy a [strfry](https://github.com/hoytech/strfry) nostr relay.
+Ansible playbook to deploy a [strfry](https://github.com/hoytech/strfry) nostr relay tailored to indexing kind 10002.
+
+NOTE: please do not deploy this unless you expect to be serving a significant number of requests (for example, if you run a popular client). The nostr network only needs a few indexers to be available; any more only add unnecessary load on any mirrors that are configured.
 
 ## Prerequisites
 
@@ -42,16 +44,6 @@ This will:
 1. Install system dependencies
 2. Create strfry user and directories
 3. Clone and build strfry from source
-4. Configure and start systemd service
-
-## Verify
-
-Check service status:
-```sh
-ssh your-server "systemctl status strfry"
-```
-
-Test the relay:
-```sh
-curl http://your-server:7777
-```
+4. Start a strfry relay that only accepts kind 10002
+5. Start a strfry router that replicates kind 10002 events to/from selected relays
+6. Set up a nginx reverse proxy with a SSL certificate for your domain
