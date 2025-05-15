@@ -2,7 +2,7 @@
 
 Ansible playbook to deploy a [strfry](https://github.com/hoytech/strfry) nostr relay tailored to indexing kind 10002.
 
-NOTE: please do not deploy this unless you expect to be serving a significant number of requests (for example, if you run a popular client). The nostr network only needs a few indexers to be available; any more only add unnecessary load on any mirrors that are configured.
+**Please do not deploy this unless you expect to be serving a significant number of requests (for example, if you run a popular client). The nostr network only needs a few indexers to be available; any more only add unnecessary load on any mirrors that are configured.**
 
 ## Prerequisites
 
